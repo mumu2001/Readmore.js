@@ -13,21 +13,9 @@
         maxHeight: 200,
         moreLink: '<a href="#">Read More</a>',
         lessLink: '<a href="#">Close</a>'
-      },
+      };
 
-      styles = '.readmore-js-toggle, .readmore-js-section { display: block; width: 100%; }\
-.readmore-js-section { overflow: hidden; }';
-
-    (function(d,u) {
-      if(d.createStyleSheet) {
-        d.createStyleSheet( u );
-      }
-      else {
-        var css=d.createElement('style');
-        css.appendChild(document.createTextNode(u));
-        d.getElementsByTagName("head")[0].appendChild(css);
-      }
-    }(document, styles));
+  var stylesApplied = false;
 
   function Readmore( element, options ) {
     this.element = element;
@@ -36,6 +24,35 @@
 
     this._defaults = defaults;
     this._name = readmore;
+
+    if (! stylesApplied) {
+      var styles = '.readmore-js-toggle, .readmore-js-section {\
+  display: block;\
+  width: 100%;\
+  -webkit-transition: height ' + this.options.speed + 'ms;\
+  -moz-transition: height ' + this.options.speed + 'ms;\
+  -ms-transition: height ' + this.options.speed + 'ms;\
+  -o-transition: height ' + this.options.speed + 'ms;\
+  transition: height ' + this.options.speed + 'ms;\
+}\
+.readmore-js-section {\
+  overflow: hidden;\
+}';
+
+      stylesApplied = true;
+
+      (function(d,u) {
+        if(d.createStyleSheet) {
+          d.createStyleSheet( u );
+        }
+        else {
+          var css=d.createElement('style');
+          css.appendChild(document.createTextNode(u));
+          d.getElementsByTagName("head")[0].appendChild(css);
+        }
+      }(document, styles));
+    }
+
 
     this.init();
   }
@@ -88,7 +105,7 @@
         newLink = 'moreLink';
       }
 
-      $(element).animate({"height": newHeight}, {duration: $this.options.speed });
+      $(element).css({"height": newHeight});
 
       $(trigger).replaceWith($($this.options[newLink]).on('click', function(event) { $this.toggleSlider(this, element, event) }).addClass('readmore-js-toggle'));
     }
