@@ -73,7 +73,7 @@
 
         current.data("boxHeight", current.outerHeight(true));
 
-        if(current.outerHeight(true) < maxHeight) {
+        if(current.outerHeight(true) <= maxHeight) {
           // The block is shorter than the limit, so there's no need to truncate it.
           return true;
         }
